@@ -7,7 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 def cluster(data, epsilon, points):
 	fig = plt.figure()
-	
+
 	ax = fig.add_subplot(1,2,1, projection='3d')
 	ax.scatter(data[:,0],data[:,1],data[:,2], s=4,marker='+')
 
@@ -31,7 +31,6 @@ def cluster(data, epsilon, points):
 	    if len(xyz) > 3:
 	   		#ax.plot_wireframe(xyz[:,0],xyz[:,1],xyz[:,2])
 	   		ax.plot(xyz[:,0],xyz[:,1],xyz[:,2], 'o', markerfacecolor=col, markeredgecolor='k', markersize=4)
-		
-	
-	plt.show()
 
+
+	plt.show()
