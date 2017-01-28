@@ -11,7 +11,10 @@ DEGREES_PER_STEP = 360.0 / 389.47
 
 INCLINATION_ANGLE = 30.0
 
-class DataRenderer():
+EXPORT_FILE1 = "lidar_3d.npz"
+EXPORT_FILE2 = "lidar_3d.txt"
+
+class DataConversion():
 	def __init__(self, filename, N=0):
 		# Read in raw data from file
         # Stop at the end of the file, or when N entries have been read
@@ -31,6 +34,8 @@ class DataRenderer():
 		self.Zs = []
 
 	def calculate(self, stride=1):
+		print("Converting to 3D Point Array...")
+
 		# Reset
 		self.Xs = []
 		self.Ys = []
@@ -67,52 +72,14 @@ class DataRenderer():
 			self.Ys.append(point_mat[1,0])
 			self.Zs.append(point_mat[2,0])
 
-	def plot(self, stride=1):
-		fig = plt.figure()
-		ax = fig.add_subplot(111, projection='3d')
-		ax.scatter(self.Xs[::stride], self.Ys[::stride], self.Zs[::stride])
-		fig.show()
+		print("Exporting to Files...")
 
-	def cluster(self, epsilon, points):
-		data = np.zeros((len(self.Xs),3))
-		for element in range(len(self.Xs)):
-			data[element,0]=self.Xs[element]
-			data[element,1]=self.Ys[element]
-			data[element,2]=self.Zs[element]
+		np.savez('./'+EXPORT_FILE1, x=self.Xs, y=self.Ys,z=self.Zs)
+		np.savetxt('./'+EXPORT_FILE2, np.c_[self.Xs,self.Ys,self.Zs])
 
-		fig = plt.figure()
-
-		ax = fig.add_subplot(1,2,1, projection='3d')
-		ax.scatter(data[:,0],data[:,1],data[:,2], s=4,marker='+')
-
-		db = DBSCAN(eps=epsilon, min_samples = points).fit(data)
-		labels = db.labels_
-		core_samples_mask = np.zeros_like(labels, dtype=bool)
-		core_samples_mask[db.core_sample_indices_] = True
-		n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
-
-		unique_labels = set(labels)
-		colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
-		ax=fig.add_subplot(1,2,2,projection='3d')
-		for k, col in zip(unique_labels, colors):
-		    if k == -1:
-		        # Black used for noise.
-		        col = 'k'
-
-		    class_member_mask = (labels == k)
-
-		    xyz = data[class_member_mask & core_samples_mask]
-		    if len(xyz) > 3:
-		   		#ax.plot_wireframe(xyz[:,0],xyz[:,1],xyz[:,2])
-		   		ax.plot(xyz[:,0],xyz[:,1],xyz[:,2], 'o', markerfacecolor=col, markeredgecolor='k', markersize=4)
-
-		plt.show()
-
+		print("Done! Files saved to "+EXPORT_FILE1+ " and "+EXPORT_FILE2)
 
 
 if __name__ == '__main__':
-	dr = DataRenderer('lidardata.txt')
+	dr = DataConversion('lidardata.txt')
 	dr.calculate(stride=10)
-	dr.cluster(100, 5)
-	#dr.plot(100, 5)
-	#input()
