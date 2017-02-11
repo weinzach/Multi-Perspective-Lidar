@@ -1,12 +1,14 @@
-import sys
 from rplidar import RPLidar
 import math
 
 PORT_NAME_UNIX = '/dev/ttyUSB0'
 PORT_NAME_WINDOWS = 'COM4'
 
+count = 0
+
 #Algorithm to go through 2 lists to compare distances and equal angles
 def motionDetect(previous,current):
+        global count
         #Intialize Variables
         prevLength = len(previous)
         currLength = len(current)
@@ -25,13 +27,14 @@ def motionDetect(previous,current):
                 angleP = int(float(previous[i].split(" ")[0]))
                 distC = int(float(current[i].split(" ")[1]))
                 distP = int(float(previous[i].split(" ")[1]))
-                if(angleC==angleP):
+                if(abs(angleC-angleP)>2):
                         if(abs(distC-distP)>20):
                                 diffs = diffs+1
 
         #Print if Differences are above tolerance
         if(diffs>20):
-                print("Moved!")
+                count = count+1
+                print ("Count: "+str(count))
 
 #Main run function        
 def run():
