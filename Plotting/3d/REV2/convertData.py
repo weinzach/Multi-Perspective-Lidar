@@ -33,7 +33,7 @@ class DataConversion():
 		self.Ys = []
 		self.Zs = []
 
-	def calculate(self, stride=1):
+	def calculate(self, stride=1, threeD=False):
 		print("Converting to 3D Point Array...")
 
 		# Reset
@@ -71,15 +71,58 @@ class DataConversion():
 			self.Xs.append(point_mat[0,0])
 			self.Ys.append(point_mat[1,0])
 			self.Zs.append(point_mat[2,0])
+		if(threeD==True):
+	   		self.cluster(100, 5)
+		else:
+			print("Exporting to Files...")
+			np.savez('./'+"NC_"+EXPORT_FILE1, x=self.Xs, y=self.Ys,z=self.Zs)
+			np.savetxt('./'+"NC_"+EXPORT_FILE2, np.c_[self.Xs,self.Ys,self.Zs])
+			print("Done! Files saved to NC_"+EXPORT_FILE1+ " and NC_"+EXPORT_FILE2)
 
+
+	def cluster(self, epsilon, points):
+
+		data = np.zeros((len(self.Xs),3))
+		for element in range(len(self.Xs)):
+			data[element,0]=self.Xs[element]
+			data[element,1]=self.Ys[element]
+			data[element,2]=self.Zs[element]
+
+		db = DBSCAN(eps=epsilon, min_samples = points).fit(data)
+		labels = db.labels_
+		core_samples_mask = np.zeros_like(labels, dtype=bool)
+		core_samples_mask[db.core_sample_indices_] = True
+		n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+
+		unique_labels = set(labels)
+		colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
+
+		dataX = []
+		dataY = []
+		dataZ = []
+		clusterSize = []
+
+		for k, col in zip(unique_labels, colors):
+			if(k == -1):
+		        # Black used for noise.
+				col = 'k'
+
+			class_member_mask = (labels == k)
+			xyz = data[class_member_mask & core_samples_mask]
+			if len(xyz) > 3:
+				#print(k)
+				size = len(xyz[:,0])+len(xyz[:,1])+len(xyz[:,2])
+				clusterSize.append(size)
+				dataX.append(xyz[0][0])
+				dataY.append(xyz[1][0])
+				dataZ.append(xyz[2][0])
+
+		print(clusterSize)
 		print("Exporting to Files...")
-
-		np.savez('./'+EXPORT_FILE1, x=self.Xs, y=self.Ys,z=self.Zs)
-		np.savetxt('./'+EXPORT_FILE2, np.c_[self.Xs,self.Ys,self.Zs])
-
-		print("Done! Files saved to "+EXPORT_FILE1+ " and "+EXPORT_FILE2)
+		np.savetxt('./'+"C_"+EXPORT_FILE2, np.c_[dataX,dataY,dataZ,clusterSize])
+		print("Done! Files saved to C_"+EXPORT_FILE2)
 
 
 if __name__ == '__main__':
 	dr = DataConversion('lidardata.txt')
-	dr.calculate(stride=10)
+	dr.calculate(stride=10, threeD=True)
