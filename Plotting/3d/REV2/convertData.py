@@ -98,7 +98,7 @@ class DataConversion():
 
 		#Array to Store Each Cluster
 		clusterData = []
-		colors = ["RED","GREEN","BLUE","YELLOW","ORANGE"]
+		colors = ["RED","GREEN","BLUE","YELLOW","MAGENTA"]
 		clusterColor = []
 
 		#Append Found Clusters to Array (Using Random Colors)

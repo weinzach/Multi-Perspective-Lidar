@@ -27,21 +27,23 @@ function drawPoints(){
         var z = parseFloat(point[1])/1000;
         var color = point[3];
         var clusternumber = parseInt(point[4]);
+        var sphere = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+
         switch(color) {
     		case "RED":
-        		var sphereRed = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        		sphere.GetComponent.<Renderer>().material.color = Color.red;
         		break;
     		case "BLUE":
-        		var sphereBlue = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        		sphere.GetComponent.<Renderer>().material.color = Color.blue;
         		break;
     		case "GREEN":
-        		var sphereGreen = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        		sphere.GetComponent.<Renderer>().material.color = Color.green;
         		break;
     		case "YELLOW":
-        		var sphereYellow= Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        		sphere.GetComponent.<Renderer>().material.color = Color.yellow;
         		break;
-    		case "ORANGE":
-        		var sphereOrange = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+    		case "MAGENTA":
+        		sphere.GetComponent.<Renderer>().material.color = Color.magenta;
         		break;
     		default:
         	break;
