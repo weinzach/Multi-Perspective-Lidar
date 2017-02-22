@@ -89,38 +89,31 @@ class DataConversion():
 			data[element,2]=self.Zs[element]
 
 		db = DBSCAN(eps=epsilon, min_samples = points).fit(data)
+		core_samples = db.core_sample_indices_
 		labels = db.labels_
-		core_samples_mask = np.zeros_like(labels, dtype=bool)
-		core_samples_mask[db.core_sample_indices_] = True
 		n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 
-		unique_labels = set(labels)
-		colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
+		print(str(n_clusters_)+" clusters found!")
 
-		dataX = []
-		dataY = []
-		dataZ = []
-		clusterSize = []
+		#Array to Store Each Cluster
+		clusterData = []
+		clusterColor = []
 
-		for k, col in zip(unique_labels, colors):
-			if(k == -1):
-		        # Black used for noise.
-				col = 'k'
+		#Append Found Clusters to Array (ALL RED FOR NOW)
+		for i in xrange(n_clusters_):
+			clusters = [data[labels == i]]
+			clusterData.append(clusters)
+			clusterColor.append("RED")
 
-			class_member_mask = (labels == k)
-			xyz = data[class_member_mask & core_samples_mask]
-			if len(xyz) > 3:
-				#print(k)
-				size = len(xyz[:,0])+len(xyz[:,1])+len(xyz[:,2])
-				clusterSize.append(size)
-				dataX.append(xyz[0][0])
-				dataY.append(xyz[1][0])
-				dataZ.append(xyz[2][0])
+		#Print First Cluster Found Points
+		print("Cluster:")
+		print(clusterData[0][0])
+		print("Cluster Color: "+clusterColor[0])
 
-		print(clusterSize)
+		print("Done!")
 		print("Exporting to Files...")
-		np.savetxt('./'+"C_"+EXPORT_FILE2, np.c_[dataX,dataY,dataZ,clusterSize])
-		print("Done! Files saved to C_"+EXPORT_FILE2)
+		#np.savetxt('./'+"C_"+EXPORT_FILE2, np.r_[clusterData])
+		#print("Done! Files saved to C_"+EXPORT_FILE2)
 
 
 if __name__ == '__main__':
