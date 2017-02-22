@@ -46,24 +46,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\!KAM3RA\DEMO\Classes\Flyer.cs" />
-     <Compile Include="Assets\!KAM3RA\DEMO\Classes\Game.cs" />
-     <Compile Include="Assets\!KAM3RA\DEMO\Classes\Kart.cs" />
-     <Compile Include="Assets\!KAM3RA\DEMO\Classes\NPC.cs" />
-     <Compile Include="Assets\!KAM3RA\DEMO\Classes\Player.cs" />
-     <Compile Include="Assets\!KAM3RA\DEMO\Classes\Prop.cs" />
-     <Compile Include="Assets\!KAM3RA\DEMO\Classes\Props.cs" />
-     <Compile Include="Assets\!KAM3RA\DEMO\Classes\Sundome.cs" />
-     <Compile Include="Assets\!KAM3RA\KAM3RA\Classes\Actor.cs" />
-     <Compile Include="Assets\!KAM3RA\KAM3RA\Classes\Range.cs" />
-     <Compile Include="Assets\!KAM3RA\KAM3RA\Classes\User.cs" />
-     <None Include="Assets\!KAM3RA\DEMO\Assets\3D Text\Resources\3D Text Shader.shader" />
-     <None Include="Assets\!KAM3RA\DEMO\Assets\Names\NorseNames.txt" />
-     <None Include="Assets\!KAM3RA\DEMO\Assets\Sundome\Sundome.shader" />
-     <None Include="Assets\!KAM3RA\DEMO\Assets\3D Text\Resources\3D Text Shader Simple.shader" />
-     <None Include="Assets\!KAM3RA\DEMO\Assets\Paths\Path02.txt" />
-     <None Include="Assets\!KAM3RA\DEMO\Assets\3D Text\Resources\GamalielOFL.txt" />
-     <None Include="Assets\!KAM3RA\DEMO\Assets\Paths\Path01.txt" />
+     <Compile Include="Assets\PointCloud\Scripts\EnablePointSize.cs" />
+     <Compile Include="Assets\PointCloud\Scripts\PointCloudManager.cs" />
+     <Compile Include="Assets\Triangulator.cs" />
+     <None Include="Assets\PointCloud\Shaders\VertexColor.shader" />
+     <None Include="Assets\PointCloud\Readme.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

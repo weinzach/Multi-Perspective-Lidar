@@ -1,4 +1,5 @@
-﻿#pragma strict
+﻿
+#pragma strict
 
 import System.IO;
 
@@ -24,8 +25,29 @@ function drawPoints(){
         var x = parseFloat(point[0])/1000;
         var y = parseFloat(point[2])/1000;
         var z = parseFloat(point[1])/1000;
-        var sphere = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        var color = point[3];
+        var clusternumber = parseInt(point[4]);
+        switch(color) {
+    		case "RED":
+        		var sphereRed = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        		break;
+    		case "BLUE":
+        		var sphereBlue = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        		break;
+    		case "GREEN":
+        		var sphereGreen = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        		break;
+    		case "YELLOW":
+        		var sphereYellow= Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        		break;
+    		case "ORANGE":
+        		var sphereOrange = Instantiate(prefab, new Vector3 (x,y,z), Quaternion.identity);
+        		break;
+    		default:
+        	break;
+		}
     }
+
 }
 
 function ReadFile() {
