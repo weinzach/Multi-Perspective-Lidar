@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.cluster import DBSCAN
+import random
 
 ANGLE_INDEX = 2
 RADIUS_INDEX = 3
@@ -33,7 +34,7 @@ class DataConversion():
 		self.Ys = []
 		self.Zs = []
 
-	def calculate(self, stride=1, threeD=False):
+	def calculate(self, stride=1, clustering=False):
 		print("Converting to 3D Point Array...")
 
 		# Reset
@@ -71,7 +72,7 @@ class DataConversion():
 			self.Xs.append(point_mat[0,0])
 			self.Ys.append(point_mat[1,0])
 			self.Zs.append(point_mat[2,0])
-		if(threeD==True):
+		if(clustering==True):
 	   		self.cluster(100, 5)
 		else:
 			print("Exporting to Files...")
@@ -97,25 +98,30 @@ class DataConversion():
 
 		#Array to Store Each Cluster
 		clusterData = []
+		colors = ["RED","GREEN","BLUE","YELLOW","ORANGE"]
 		clusterColor = []
 
-		#Append Found Clusters to Array (ALL RED FOR NOW)
+		#Append Found Clusters to Array (Using Random Colors)
 		for i in xrange(n_clusters_):
 			clusters = [data[labels == i]]
 			clusterData.append(clusters)
-			clusterColor.append("RED")
+			clusterColor.append(random.choice(colors))
 
-		#Print First Cluster Found Points
-		print("Cluster:")
-		print(clusterData[0][0])
-		print("Cluster Color: "+clusterColor[0])
+		#Export Array Wiht Colors
+		print("Exporting to File...")
+		f1=open(" C_"+EXPORT_FILE2, 'w+')
+		for i in range(0,len(clusterData)):
+			for cPoints in clusterData[i][0]:
+				cPoints = cPoints.tolist()
+				cPoints.append(clusterColor[i])
+				cPoints.append(i)
+				f1.write(" ".join(map(lambda x: str(x), cPoints)) + "\n")
 
-		print("Done!")
-		print("Exporting to Files...")
-		#np.savetxt('./'+"C_"+EXPORT_FILE2, np.r_[clusterData])
-		#print("Done! Files saved to C_"+EXPORT_FILE2)
+		#Close File
+		f1.close
+		print("Done! Files saved to C_"+EXPORT_FILE2)
 
 
 if __name__ == '__main__':
 	dr = DataConversion('lidardata.txt')
-	dr.calculate(stride=10, threeD=True)
+	dr.calculate(stride=10, clustering=True)
