@@ -2,7 +2,7 @@
 from rplidar import RPLidar
 from socketIO_client import SocketIO, LoggingNamespace
 
-socketIO = SocketIO('192.168.1.116', 8000, LoggingNamespace)
+socketIO = SocketIO('192.168.1.142', 8000, LoggingNamespace)
 
 PORT_NAME = '/dev/ttyUSB0'
 DMAX = 6000

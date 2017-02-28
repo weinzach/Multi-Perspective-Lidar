@@ -1,3 +1,4 @@
+import asyncio
 from rplidar import RPLidar
 import math
 
@@ -5,10 +6,13 @@ PORT_NAME_UNIX = '/dev/ttyUSB0'
 PORT_NAME_WINDOWS = 'COM4'
 
 count = 0
+found = False
 
 #Algorithm to go through 2 lists to compare distances and equal angles
+@asyncio.coroutine
 def motionDetect(previous,current):
         global count
+        global found
         #Intialize Variables
         prevLength = len(previous)
         currLength = len(current)
@@ -34,38 +38,51 @@ def motionDetect(previous,current):
 
         #Print if Differences are above tolerance
         if(diffs>40):
+                found = True
                 print ("Motion Found! ("+str(diffs)+")")
 
 #Main run function
-def run():
+@asyncio.coroutine
+def motionLidar():
         #Intialize Variables
         firstArray = 0
         previous = []
         current = []
         lidar = RPLidar(PORT_NAME_UNIX)
-        print('Recording measurments... Press Crl+C to stop')
+        while True:
+            yield #Start Lidar Scanning
+            print('Starting Scan...')
+            for measurment in lidar.iter_measurments():
+                if measurment[0] == True:
+                #Compare every 2 Arrays
+                    if(firstArray==2):
+                        motionDetect(previous,current)
+                        previous = current
+                        firstArray = 0
+                    else:
+                        firstArray = firstArray+1
+                    #Append Data to Current Array
+                    current = []
+                    current.append(str(measurment[2])+" "+str(measurment[3]))
+                else:
+                    current.append(str(measurment[2])+" "+str(measurment[3]))
 
-        try:
-                #Start Lidar Scanning
-                for measurment in lidar.iter_measurments():
-                        if measurment[0] == True:
-                                #Compare every 2 Arrays
-                                if(firstArray==2):
-                                        motionDetect(previous,current)
-                                        previous = current
-                                        firstArray = 0
-                                else:
-                                        firstArray = firstArray+1
-                        #Append Data to Current Array
-                                current = []
-                                current.append(str(measurment[2])+" "+str(measurment[3]))
-                        else:
-                                current.append(str(measurment[2])+" "+str(measurment[3]))
-        except KeyboardInterrupt:
-                print('Stopping...')
         #Stop Lidar
         lidar.stop()
         lidar.disconnect()
 
-if __name__ == '__main__':
-	run()
+@asyncio.coroutine
+def emitter():
+    global found
+    print('Waiting to Emit...')
+    while True:
+        yield
+        if(found==True):
+            print("Emtting...")
+            found = False
+
+boo_task = asyncio.async(emitter())
+baa_task = asyncio.async(motionLidar())
+
+loop = asyncio.get_event_loop()
+loop.run_forever()
