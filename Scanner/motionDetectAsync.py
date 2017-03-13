@@ -1,18 +1,23 @@
 import asyncio
 from rplidar import RPLidar
 import math
+from concurrent.futures import ProcessPoolExecutor
+import time
 
 PORT_NAME_UNIX = '/dev/ttyUSB0'
 PORT_NAME_WINDOWS = 'COM4'
 
 count = 0
 found = False
+emit = 0
+
+print('running async test')
+
 
 #Algorithm to go through 2 lists to compare distances and equal angles
-@asyncio.coroutine
 def motionDetect(previous,current):
         global count
-        global found
+        global emit
         #Intialize Variables
         prevLength = len(previous)
         currLength = len(current)
@@ -38,25 +43,28 @@ def motionDetect(previous,current):
 
         #Print if Differences are above tolerance
         if(diffs>40):
-                found = True
-                print ("Motion Found! ("+str(diffs)+")")
+                emit = 1
+                return True
+
+        return False
 
 #Main run function
-@asyncio.coroutine
 def motionLidar():
+        global found
+        global emit
         #Intialize Variables
         firstArray = 0
         previous = []
         current = []
         lidar = RPLidar(PORT_NAME_UNIX)
+        print("Starting Scan...")
         while True:
-            yield #Start Lidar Scanning
-            print('Starting Scan...')
             for measurment in lidar.iter_measurments():
                 if measurment[0] == True:
                 #Compare every 2 Arrays
                     if(firstArray==2):
-                        motionDetect(previous,current)
+                        found = motionDetect(previous,current)
+                        print(str(found)+" "+str(emit))
                         previous = current
                         firstArray = 0
                     else:
@@ -71,18 +79,18 @@ def motionLidar():
         lidar.stop()
         lidar.disconnect()
 
-@asyncio.coroutine
 def emitter():
-    global found
+    global emit
     print('Waiting to Emit...')
     while True:
-        yield
-        if(found==True):
-            print("Emtting...")
-            found = False
+        time.sleep(1)
+        print(str(emit))
+        if(emit==1):
+            emit = 0
 
-boo_task = asyncio.async(emitter())
-baa_task = asyncio.async(motionLidar())
-
-loop = asyncio.get_event_loop()
-loop.run_forever()
+if __name__ == "__main__":
+    executor = ProcessPoolExecutor(2)
+    loop = asyncio.get_event_loop()
+    boo = asyncio.ensure_future(loop.run_in_executor(executor, motionLidar))
+    baa = asyncio.ensure_future(loop.run_in_executor(executor, emitter))
+    loop.run_forever()
