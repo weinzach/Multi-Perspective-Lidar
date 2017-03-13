@@ -14,6 +14,7 @@ def motionDetect(previous,current):
         currLength = len(current)
         listLength = 0
         diffs = 0
+        count = 0
 
         #Use range of smallest lsit
         if(prevLength<currLength):
@@ -32,17 +33,16 @@ def motionDetect(previous,current):
                                 diffs = diffs+1
 
         #Print if Differences are above tolerance
-        if(diffs>20):
-                count = count+1
-                print ("Count: "+str(count))
+        if(diffs>40):
+                print ("Motion Found! ("+str(diffs)+")")
 
-#Main run function        
+#Main run function
 def run():
         #Intialize Variables
         firstArray = 0
         previous = []
         current = []
-        lidar = RPLidar(PORT_NAME_WINDOWS)
+        lidar = RPLidar(PORT_NAME_UNIX)
         print('Recording measurments... Press Crl+C to stop')
 
         try:
