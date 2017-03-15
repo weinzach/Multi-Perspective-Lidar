@@ -11,6 +11,7 @@ with open('configClient.json') as data_file:
     config = json.load(data_file)
 node_name = config["node_name"]
 lidarPort = config["port"]
+lidarSensitivity = config["sensitivity"]
 
 #Connect to Database
 client = MongoClient('mongodb://localhost:27017/')
@@ -52,7 +53,7 @@ def motionDetect(previous,current):
                                 diffs = diffs+1
 
         #Print if Differences are above tolerance
-        if(diffs>40):
+        if(diffs>lidarSensitivity):
             db.data.update_one({
                 '_id': dbId
                 },{
