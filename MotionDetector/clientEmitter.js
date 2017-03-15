@@ -1,23 +1,55 @@
+//Module dependencies.
+var mongoose = require('mongoose');
+var config = require("./config.json");
 
-// Retrieve
-var MongoClient = require('mongodb').MongoClient;
+//Load Necessary Config Files
+var node_name = config["node_name"];
+var batman = config["batman"];
 
-var collectionData;
-// Connect to the db
-MongoClient.connect("mongodb://localhost:27017/lidarDetector", function(err, db) {
-  if(!err) {
-    console.log("We are connected");
-    collectionData = db.collection('data');
-    var cursor = collectionData.find({"node_name" : "lidarDetector1"});
-    cursor.each(function(err, doc) {
-      if(err)
-          throw err;
-          if(doc==null)
-            console.log("Node lidarDector1 not found!");
-            return;
-
-          console.log("node found:");
-          console.log(doc);
-        });
-    }
+//Connect to Database
+mongoose.connection.on('open', function(ref) {
+    console.log('Connected to mongo server.');
 });
+mongoose.connection.on('error', function(err) {
+    console.log('Could not connect to mongo server!');
+    console.log(err);
+});
+mongoose.connect('mongodb://localhost/lidarDetector');
+var Schema = mongoose.Schema;
+
+//Data Schema
+var dataDetail = new Schema({
+    node_name: String,
+    motion: Boolean,
+    data: String
+}, {
+    collection: 'data'
+});
+
+//Create MongoDB models
+var dataDetails = mongoose.model('userInfo', dataDetail);
+
+//Check for DB Entry
+function checkDB() {
+    dataDetail.findOne({
+            'node_name': node_name
+        },
+        function(err, node) {
+            if (err) {
+                return console.log(err);
+            }
+            if (!node) {
+                console.log("Node not found! Try reinitializing with the clientDetector.py");
+            }
+            console.log(node);
+        });
+}
+
+function init () {
+  //Check Database Every Half Second for Changes
+   setTimeout(function () {
+      checkDB();
+   }, 500)
+}
+
+init();                      //  start the loop
