@@ -7,7 +7,7 @@ import calendar
 from datetime import datetime
 
 #Looad in Config File
-with open('config.json') as data_file:
+with open('configClient.json') as data_file:
     config = json.load(data_file)
 node_name = config["node_name"]
 lidarPort = config["port"]
@@ -29,7 +29,6 @@ def motionDetect(previous,current):
         d = datetime.utcnow()
         timestamp=calendar.timegm(d.utctimetuple())
         #Intialize Variables
-        print(result["data"])
         prevLength = len(previous)
         currLength = len(current)
         listLength = 0
