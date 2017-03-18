@@ -8,7 +8,8 @@ var node_tolerance = config["tolerance"];
 var node_blinkRate = config["blink-rate"];
 var batman = config["batman"];
 
-if(batman==true){
+if(batman==true){ 
+  console.log("using batman...");
   var Subscriber = require('cote')({'broadcast':'10.0.255.255'}).Subscriber;
 }
 else{

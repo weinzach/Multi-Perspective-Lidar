@@ -1,7 +1,7 @@
 {
     "node_name": "LEDServer1",
     "type": "server",
-    "batman": false,
+    "batman": true,
     "tolerance" : 5,
     "blink-rate": 600
   }
