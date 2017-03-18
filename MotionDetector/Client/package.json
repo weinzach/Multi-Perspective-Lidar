@@ -1,0 +1,15 @@
+{
+  "name": "client-emitter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "clientEmitter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cote": "^0.10.0",
+    "mongoose": "^4.9.1"
+  }
+}
