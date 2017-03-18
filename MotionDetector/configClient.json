@@ -1,5 +1,5 @@
 {
-    "node_name": "LidarDetector1",
+    "node_name": "LidarDetector2",
     "type": "detector",
     "batman": true,
     "port": "/dev/ttyUSB0",
