@@ -23,6 +23,7 @@ var status = 0;
 //Intialize LEDS to Off
 var X = [255, 255, 0]; // Yellow
 var O = [0, 0, 0]; // OFF
+var R = [255, 0, 0]; // RED
 var on = [
     X, X, X, X, X, X, X, X,
     X, X, X, X, X, X, X, X,
@@ -31,7 +32,7 @@ var on = [
     X, X, X, X, X, X, X, X,
     X, X, X, X, X, X, X, X,
     X, X, X, X, X, X, X, X,
-    X, X, X, X, X, X, X, X
+    X, X, X, X, X, X, X, R
 ];
 var off = [
     O, O, O, O, O, O, O, O,
@@ -41,7 +42,7 @@ var off = [
     O, O, O, O, O, O, O, O,
     O, O, O, O, O, O, O, O,
     O, O, O, O, O, O, O, O,
-    O, O, O, O, O, O, O, O
+    O, O, O, O, O, O, O, R
 ];
 sense.setPixels(off);
 
