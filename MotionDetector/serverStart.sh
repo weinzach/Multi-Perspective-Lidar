@@ -4,4 +4,4 @@
 cd ~/Multi-Perspective-Lidar/MotionDetector/
 
 #Start Node Loop
-forever start clientEmitter.js
+forever start serverSign.js
