@@ -1,7 +1,7 @@
 {
     "node_name": "LidarDetector1",
     "type": "detector",
-    "batman": false,
+    "batman": true,
     "port": "/dev/ttyUSB0",
     "sensitivity" : 39
 }

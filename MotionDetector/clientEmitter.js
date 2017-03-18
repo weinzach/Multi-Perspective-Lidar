@@ -9,6 +9,7 @@ var batman = config["batman"];
 
 if(batman==true){
   var Publisher = require('cote')({'broadcast': '10.0.255.255'}).Publisher;
+  console.log("using batman...");
 }
 else{
   var Publisher = require('cote').Publisher;
