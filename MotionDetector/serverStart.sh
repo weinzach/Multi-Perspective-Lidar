@@ -2,6 +2,7 @@
 
 #Change into directory
 cd ~/Multi-Perspective-Lidar/MotionDetector/
+cd Server
 
 sleep 5
 

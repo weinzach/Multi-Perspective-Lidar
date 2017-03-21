@@ -2,7 +2,7 @@
 
 #Change into directory
 cd ~/Multi-Perspective-Lidar/MotionDetector/
-
+cd Client
 sleep 5
 
 #Start Node Loop
@@ -16,4 +16,3 @@ done
 
 #Stop Loop After Close
 forever stop clienEmitter.js
-
