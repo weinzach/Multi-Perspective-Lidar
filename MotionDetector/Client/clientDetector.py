@@ -48,7 +48,7 @@ def motionDetect(previous,current):
                 angleP = int(float(previous[i].split(" ")[0]))
                 distC = int(float(current[i].split(" ")[1]))
                 distP = int(float(previous[i].split(" ")[1]))
-                if(abs(angleC-angleP)>2):
+                if(abs(angleC-angleP)<=2):
                         if(abs(distC-distP)>20):
                                 diffs = diffs+1
 
