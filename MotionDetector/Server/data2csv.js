@@ -1,9 +1,22 @@
-var json2csv = require('json2csv');
 //Module dependencies.
 var mongoose = require('mongoose');
 var config = require("./configServer.json");
-var sense = require("sense-hat-led");
+var converter = require('json-2-csv');
+var fs = require('fs');
 
+var options = {
+    delimiter: {
+        wrap: '"', // Double Quote (") character
+        field: ',', // Comma field delimiter
+        array: ';', // Semicolon array value delimiter
+        eol: '\n' // Newline delimiter
+    },
+    prependHeader: true,
+    sortHeader: false,
+    trimHeaderValues: true,
+    trimFieldValues: true,
+    keys: ['diff', 'time', 'node_name', 'node_type']
+};
 
 //Connect to Database
 mongoose.connection.on('open', function(ref) {
@@ -28,10 +41,21 @@ var dataDetail = new Schema({
 //Create MongoDB models
 var dataDetails = mongoose.model('data', dataDetail);
 
-// get all the users
-dataDetails.find({}, function(err, data) {
-  if (err) throw err;
+var json2csvCallback = function(err, csv) {
+    if (err) throw err;
+    fs.writeFile('data.csv', csv, function(err) {
+        if (err) throw err;
+        console.log('file saved! (data.csv)');
+        process.exit();
+    });
+};
 
-  var result = json2csv({ fields: data });
-  console.log(result);
+dataDetails.find({}, function(err, data) {
+    if (err) throw err;
+    console.log("retrieving data...")
+    for (var i = 0; i < data.length; i++) {
+      var time = parseInt(data[i].time);
+      data[i].time = new Date(time);
+    }
+    converter.json2csv(data, json2csvCallback, options);
 });

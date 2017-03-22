@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "cote": "^0.10.0",
+    "json-2-csv": "^2.1.0",
+    "mongoose": "^4.9.1",
     "sense-hat-led": "^1.0.1"
   }
 }
