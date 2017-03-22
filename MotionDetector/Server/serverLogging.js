@@ -18,6 +18,7 @@ var Schema = mongoose.Schema;
 //Data Schema
 var dataDetail = new Schema({
     diff: String,
+    detect: String,
     time: String,
     node_name: String,
     node_type: String
@@ -85,9 +86,10 @@ batSubscriber.on('detectors', function(req) {
     if (req[3] != node_name) {
         var dataReq = new dataDetails({
             diff: req[0],
-            time: req[1],
-            node_name: req[2],
-            node_type: req[3]
+            detect: req[1],
+            time: req[2],
+            node_name: req[3],
+            node_type: req[4]
         });
         dataReq.save(function(err, dataReq) {
             if (err) return console.error(err);

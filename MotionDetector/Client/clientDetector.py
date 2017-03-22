@@ -27,8 +27,6 @@ def motionDetect(previous,current):
         global count
         global result
 
-        d = datetime.utcnow()
-        timestamp=calendar.timegm(d.utctimetuple())
         #Intialize Variables
         prevLength = len(previous)
         currLength = len(current)
@@ -59,7 +57,7 @@ def motionDetect(previous,current):
                 },{
                     '$set': {
                         'motion': True,
-                        'data': str(diffs)+","+str(timestamp)
+                        'data': str(diffs)+",1"
                 }
                 }, upsert=False)
             result = collection.find_one({"node_name": node_name})

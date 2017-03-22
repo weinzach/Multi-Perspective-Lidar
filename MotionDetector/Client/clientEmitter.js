@@ -56,6 +56,8 @@ var dataDetails = mongoose.model('data', dataDetail);
 
 //Emit on Mesh
 function emitter() {
+    var epcochTime = (new Date).getTime();
+    nodeData.push(epcochTime);
     nodeData.push(node_name);
     nodeData.push(node_type);
     console.log("emit");

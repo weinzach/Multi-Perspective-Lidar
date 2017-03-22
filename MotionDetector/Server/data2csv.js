@@ -15,7 +15,7 @@ var options = {
     sortHeader: false,
     trimHeaderValues: true,
     trimFieldValues: true,
-    keys: ['diff', 'time', 'node_name', 'node_type']
+    keys: ['diff', 'detect', 'time', 'node_name', 'node_type']
 };
 
 //Connect to Database
@@ -32,6 +32,7 @@ var Schema = mongoose.Schema;
 //Data Schema
 var dataDetail = new Schema({
     diff: String,
+    detect: String,
     time: String,
     node_name: String,
     node_type: String
