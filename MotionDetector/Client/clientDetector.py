@@ -5,6 +5,7 @@ from pprint import pprint
 from pymongo import MongoClient
 import calendar
 from datetime import datetime
+import numpy as np
 
 #Looad in Config File
 with open('configClient.json') as data_file:
