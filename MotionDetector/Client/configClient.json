@@ -3,5 +3,7 @@
     "type": "detector",
     "batman": true,
     "port": "/dev/ttyUSB0",
-    "sensitivity" : 39
+    "sensitivity" : 10,
+    "threshold" : 4
+
 }
